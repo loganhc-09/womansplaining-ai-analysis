@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Women Are Opting Out of AI: A Social Listening Analysis</title>
+    <meta name="description" content="Analysis of 1,000+ TikTok comments revealing why women resist AI adoption. From Womansplaining AI Episode 1.">
+    <meta property="og:title" content="Why Women Are Opting Out of AI: A Social Listening Analysis">
+    <meta property="og:description" content="1,000+ comments from women. 7 resistance themes. 1 uncomfortable truth: opting out is not an option.">
+    <meta property="og:type" content="article">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #fafafa;
+            color: #1a1a1a;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .header {
+            border-bottom: 2px solid #1a1a1a;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+
+        .header .podcast-badge {
+            display: inline-block;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            background: #1a1a1a;
+            padding: 4px 12px;
+            margin-bottom: 18px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .header .meta {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .header .meta a {
+            color: #666;
+            text-decoration: none;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .header .meta a:hover {
+            color: #1a1a1a;
+            border-bottom-color: #1a1a1a;
+        }
+
+        .abstract {
+            background: #f5f5f5;
+            padding: 25px 30px;
+            margin-bottom: 40px;
+            border-left: 3px solid #1a1a1a;
+        }
+
+        .abstract h2 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .abstract p {
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .section h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin: 25px 0 12px 0;
+            color: #333;
+        }
+
+        .section p {
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+        }
+
+        .stat-box .number {
+            font-size: 2rem;
+            font-weight: 300;
+            color: #1a1a1a;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
+        .stat-box .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+            align-items: start;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-container canvas {
+            flex: 1;
+            max-height: 230px;
+        }
+
+        .chart-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 15px;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
+        .chart-container-wide {
+            position: relative;
+            height: 320px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            margin: 30px 0;
+        }
+
+        .chart-container-wide canvas {
+            flex: 1;
+            max-height: 260px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        table th {
+            text-align: left;
+            padding: 10px 12px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        table td {
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            vertical-align: top;
+            line-height: 1.4;
+        }
+
+        table tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        .two-column table {
+            margin: 0;
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .bar-label {
+            width: 220px;
+            font-size: 0.85rem;
+            color: #444;
+            flex-shrink: 0;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 20px;
+            background: #eee;
+            margin-right: 15px;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: #1a1a1a;
+            transition: width 0.6s ease;
+        }
+
+        .bar-value {
+            font-size: 0.85rem;
+            font-family: 'Helvetica Neue', sans-serif;
+            color: #666;
+            min-width: 55px;
+            text-align: right;
+        }
+
+        blockquote {
+            margin: 20px 0;
+            padding: 15px 25px;
+            background: #fff;
+            border-left: 3px solid #ccc;
+            font-style: italic;
+            color: #444;
+        }
+
+        blockquote cite {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #888;
+            font-style: normal;
+        }
+
+        .quote-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .findings-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .findings-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+        }
+
+        .findings-list li:last-child {
+            border-bottom: none;
+        }
+
+        .finding-number {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-weight: 600;
+            color: #888;
+            min-width: 25px;
+        }
+
+        .methodology-steps {
+            counter-reset: step;
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .methodology-steps li {
+            padding: 15px 0 15px 45px;
+            position: relative;
+            border-bottom: 1px solid #eee;
+        }
+
+        .methodology-steps li:before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 15px;
+            width: 28px;
+            height: 28px;
+            border: 1px solid #1a1a1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
+        .methodology-steps li strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .methodology-steps li p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .note-box {
+            background: #fffbeb;
+            border: 1px solid #e6d9a8;
+            padding: 20px 25px;
+            margin: 25px 0;
+            font-size: 0.9rem;
+        }
+
+        .note-box strong {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .theme-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 22px 25px;
+            margin-bottom: 20px;
+        }
+
+        .theme-card .theme-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .theme-card .theme-rank {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: #bbb;
+        }
+
+        .theme-card .theme-name {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .theme-card .theme-count {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 0.8rem;
+            color: #888;
+            margin-left: auto;
+        }
+
+        .theme-card p {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .theme-card .theme-quote {
+            font-style: italic;
+            color: #666;
+            font-size: 0.9rem;
+            padding-left: 15px;
+            border-left: 2px solid #ddd;
+            margin-top: 12px;
+        }
+
+        .callout-box {
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            padding: 25px 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .callout-box .callout-label {
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .callout-box .callout-quote {
+            font-size: 1.15rem;
+            font-style: italic;
+            color: #333;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .callout-box .callout-source {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 12px;
+        }
+
+        .demographic-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .demo-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+        }
+
+        .demo-card h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #666;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .demo-card ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .demo-card li {
+            font-size: 0.9rem;
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+            line-height: 1.5;
+        }
+
+        .demo-card li:last-child {
+            border-bottom: none;
+        }
+
+        .demo-card li strong {
+            color: #1a1a1a;
+        }
+
+        .podcast-cta {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .podcast-cta h3 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .podcast-cta p {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 0;
+        }
+
+        .podcast-cta a {
+            color: #fff;
+            border-bottom: 1px solid #888;
+        }
+
+        .podcast-cta a:hover {
+            border-bottom-color: #fff;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 25px;
+            border-top: 1px solid #ddd;
+            font-size: 0.85rem;
+            color: #888;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #666;
+            text-decoration: none;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .footer a:hover {
+            color: #1a1a1a;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 30px 20px; }
+            .header h1 { font-size: 1.6rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .two-column { grid-template-columns: 1fr; }
+            .quote-grid { grid-template-columns: 1fr; }
+            .demographic-grid { grid-template-columns: 1fr; }
+            .bar-label { width: 160px; font-size: 0.8rem; }
+            .theme-card .theme-header { flex-wrap: wrap; }
+            .theme-card .theme-count { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="https://open.spotify.com/show/6uDNUzSFzZedJoiUE4lLfb" target="_blank" class="podcast-badge" style="text-decoration: none; color: #fff;">Womansplaining AI &mdash; Episode 1</a>
+            <h1>Why Women Are Opting Out of AI</h1>
+            <p class="subtitle">What 1,000+ TikTok comments reveal about women's resistance to artificial intelligence</p>
+            <p class="meta">
+                Analysis by <a href="https://www.tiktok.com/@loganinthefuture" target="_blank">@loganinthefuture</a> |
+                Source: <a href="https://www.tiktok.com/@didoriot/video/7586016585823882517" target="_blank">@didoriot</a> |
+                January 2026
+            </p>
+        </header>
+
+        <div class="abstract">
+            <h2>Abstract</h2>
+            <p>This analysis examines over 1,000 comments from a viral TikTok video by creator Dido Riot, which explores why women are using generative AI at lower rates than men. Through qualitative coding and AI-assisted sentiment analysis, we identified seven dominant themes in how women articulate their resistance to AI. The findings reveal that women's reluctance is not ignorance or technophobia&mdash;it is a complex, often well-reasoned response rooted in identity, distrust, ethics, and lived experience. This analysis was discussed on Episode 1 of <em><a href="https://open.spotify.com/show/6uDNUzSFzZedJoiUE4lLfb" target="_blank" style="color: #444; border-bottom: 1px solid #ccc;">Womansplaining AI</a></em>, "On Women in AI and Who Gets a Seat."</p>
+        </div>
+
+        <!-- Section 1: Overview -->
+        <section class="section">
+            <h2>1. Overview</h2>
+            <p>Women are using generative AI at significantly lower rates than men. Multiple studies confirm the gender gap in AI adoption, and concern is mounting that this disparity will set women back in the workplace. But the conversation often stops at "women should use AI more" without asking <em>why</em> women are opting out&mdash;and whether their reasons carry weight.</p>
+            <p>Creator <a href="https://www.tiktok.com/@didoriot/video/7586016585823882517" target="_blank" style="color: #444; border-bottom: 1px solid #ccc;">Dido Riot's viral TikTok</a> addressed this directly, examining the research and arguing that women's resistance to AI deserves more nuance than a simple "get on board" message. The comment section became a de facto focus group: over 1,000 comments, overwhelmingly from women, articulating exactly why they are not using AI.</p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="number">1,000+</div>
+                    <div class="label">Comments Analyzed</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">7</div>
+                    <div class="label">Resistance Themes</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">190+</div>
+                    <div class="label">Gendered Critiques</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number">2</div>
+                    <div class="label">Sides of the Sword</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: The Source Video -->
+        <section class="section">
+            <h2>2. The Source Video</h2>
+            <p>Dido Riot's video cites research showing women are using generative AI at lower rates than men, then unpacks why&mdash;pushing back against the default narrative that women simply need to "catch up." The video highlights how AI's development has been shaped by male-dominated industries, with explicit content and objectification baked into the technology's foundations.</p>
+
+            <div class="callout-box">
+                <div class="callout-label">From the Video</div>
+                <div class="callout-quote">"Not only is the objectification of women one of the core pillars of the popularity of AI, it's literally built into the fabric of the internet. The first JPEG was a Playboy model. The first advancements made in video and image compression was because pornography needed to be played faster at a lower bandwidth."</div>
+                <div class="callout-source">&mdash; Dido Riot (@didoriot)</div>
+            </div>
+
+            <p>The video's framing&mdash;that women's hesitation is neither irrational nor something to be overcome through better marketing&mdash;struck a chord. The comment section became an outpouring of specific, personal, and often deeply reasoned explanations for why women are resistant to AI adoption.</p>
+        </section>
+
+        <!-- Section 3: Thematic Analysis -->
+        <section class="section">
+            <h2>3. Thematic Analysis: The Top 7 Reasons Women Resist AI</h2>
+            <p>Seven dominant themes emerged from the comment data. The top five account for the vast majority of resistance narratives. Two additional themes surfaced with significant frequency.</p>
+
+            <div class="chart-container-wide">
+                <div class="chart-title">Fig. 1: Distribution of Resistance Themes</div>
+                <canvas id="themesChart"></canvas>
+            </div>
+
+            <div class="theme-card">
+                <div class="theme-header">
+                    <span class="theme-rank">01</span>
+                    <span class="theme-name">Gendered Critique of AI Development</span>
+                    <span class="theme-count">190+ comments</span>
+                </div>
+                <p>The single most discussed theme. Commenters criticized tech bros and male-dominated AI development, referenced AI girlfriends and the sexualization built into these platforms, and shared stories of male coworkers over-trusting AI output while dismissing female colleagues' expertise. This wasn't abstract critique&mdash;it was rooted in daily workplace experience.</p>
+                <div class="theme-quote">"My male coworker trusts ChatGPT over me&mdash;a person with 15 years of experience in this exact field. That tells you everything you need to know about who this technology was built for."</div>
+            </div>
+
+            <div class="theme-card">
+                <div class="theme-header">
+                    <span class="theme-rank">02</span>
+                    <span class="theme-name">Pride in Independent Thinking</span>
+                </div>
+                <p>Women framed AI resistance as intellectual self-preservation. Comments expressed genuine pride in human cognition&mdash;not as technophobia, but as a values statement. The recurring sentiment: our ability to think independently is worth protecting.</p>
+                <div class="theme-quote">"I like using my brain because we think on our own."</div>
+            </div>
+
+            <div class="theme-card">
+                <div class="theme-header">
+                    <span class="theme-rank">03</span>
+                    <span class="theme-name">AI Is Inaccurate and Unreliable</span>
+                </div>
+                <p>Healthy skepticism about AI quality, backed by personal anecdotes of AI failures, hallucinations, and confidently wrong outputs. This was not ignorance of the technology&mdash;it was informed critique from people who had tried it and found it wanting.</p>
+                <div class="theme-quote">"Why would I use a tool dumber than I am?"</div>
+            </div>
+
+            <div class="theme-card">
+                <div class="theme-header">
+                    <span class="theme-rank">04</span>
+                    <span class="theme-name">Creativity and Art Protection</span>
+                </div>
+                <p>Concerns about AI cannibalizing human creativity. Commenters raised stolen work, copyright violations, and the philosophical position that art is fundamentally human&mdash;defined by its imperfections. For many, using AI-generated content felt like participating in the theft of other creators' labor.</p>
+                <div class="theme-quote">"Art is human. The mistakes, the weird choices, the emotion&mdash;that's the whole point. AI doesn't make art. It makes averages."</div>
+            </div>
+
+            <div class="theme-card">
+                <div class="theme-header">
+                    <span class="theme-rank">05</span>
+                    <span class="theme-name">Environmental Concerns</span>
+                </div>
+                <p>Recurring references to the material costs of AI infrastructure: water consumption for data center cooling, energy use, and carbon footprint. Women connected personal technology choices to larger ecological consequences.</p>
+                <div class="theme-quote">"I would like drinkable water and breathable air."</div>
+            </div>
+
+            <div class="theme-card">
+                <div class="theme-header">
+                    <span class="theme-rank">06</span>
+                    <span class="theme-name">Cognitive Decline and Brain Atrophy</span>
+                </div>
+                <p>Fear that relying on AI erodes cognitive capacity over time. Commenters cited research on cognitive offloading and expressed concern that outsourcing thinking to machines would make them less capable, not more.</p>
+                <div class="theme-quote">"I'm not going to let a machine think for me and then wonder why I can't think anymore."</div>
+            </div>
+
+            <div class="theme-card">
+                <div class="theme-header">
+                    <span class="theme-rank">07</span>
+                    <span class="theme-name">Workplace Resistance and Pressure</span>
+                </div>
+                <p>A significant number of commenters described feeling pressured to use AI at work against their better judgment. The resentment was directed not at the technology itself but at the top-down mandate to adopt it without adequate consideration of its limitations or ethical implications.</p>
+                <div class="theme-quote">"My company wants me to use AI for everything. I don't get a say. The irony is they laid off the people who actually knew how to do the work."</div>
+            </div>
+        </section>
+
+        <!-- Section 4: The Meta-Pattern -->
+        <section class="section">
+            <h2>4. The Meta-Pattern: Identity-Based Resistance</h2>
+            <p>Across all seven themes, a meta-pattern emerged: <strong>identity-based resistance</strong>. Women were not simply evaluating AI as a tool and finding it inadequate. They were asserting who they are and what they value&mdash;independent thinking, creative integrity, environmental stewardship, bodily autonomy, skepticism of male-dominated systems&mdash;and finding that AI, as currently built and marketed, conflicts with those values.</p>
+            <p>This is the "we don't need it" narrative. But it is more nuanced than blanket rejection. It is a statement of self-determination: <em>I am choosing not to participate in a system that does not reflect my values or serve my interests.</em></p>
+
+            <div class="two-column">
+                <div class="chart-container" style="height: 280px;">
+                    <div class="chart-title">Fig. 2: Resistance Framing</div>
+                    <canvas id="framingChart"></canvas>
+                </div>
+                <div>
+                    <table>
+                        <tr>
+                            <th>Framing</th>
+                            <th>Characteristics</th>
+                        </tr>
+                        <tr>
+                            <td>Values-Based Opt-Out</td>
+                            <td>Ethical, environmental, or creative objections; principled stance</td>
+                        </tr>
+                        <tr>
+                            <td>Practical Skepticism</td>
+                            <td>Tried it, found it unreliable; evidence-based rejection</td>
+                        </tr>
+                        <tr>
+                            <td>Systemic Critique</td>
+                            <td>Gendered power dynamics; who benefits, who's harmed</td>
+                        </tr>
+                        <tr>
+                            <td>Self-Preservation</td>
+                            <td>Cognitive autonomy; protecting mental capacity</td>
+                        </tr>
+                        <tr>
+                            <td>Ambivalent / Conflicted</td>
+                            <td>Recognizes both risk of using and risk of not using</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: The Double-Edged Sword -->
+        <section class="section">
+            <h2>5. The Double-Edged Sword</h2>
+            <p>Among the most striking comments were those expressing genuine ambivalence&mdash;women who recognized that opting out carries its own risks. These commenters held two contradictory truths simultaneously: AI is a patriarchal system that does not serve them, <em>and</em> refusing to engage with it may further entrench that patriarchy.</p>
+
+            <div class="callout-box">
+                <div class="callout-label">The Paradox</div>
+                <div class="callout-quote">"Women are more aware of internal and external impacts&mdash;i.e. cognitive decline and environmental weight that AI has. But if we don't participate, we risk the creation of an AI patriarchy."</div>
+                <div class="callout-source">&mdash; TikTok comment</div>
+            </div>
+
+            <blockquote>
+                "Why is it always lose-lose? AI is a patriarchal system now because it's being designed, developed, and created primarily by men. We know AI is bad for the environment, women are nationally resisting AI and the use of it, but in doing so, we are all losing out on an equally balanced AI system."
+                <cite>&mdash; TikTok comment</cite>
+            </blockquote>
+
+            <p>This tension&mdash;between principled resistance and pragmatic necessity&mdash;is the central thread of the <em><a href="https://open.spotify.com/show/6uDNUzSFzZedJoiUE4lLfb" target="_blank" style="color: #444; border-bottom: 1px solid #ccc;">Womansplaining AI</a></em> podcast. As co-host Mara Bolis put it: opting out of AI is about as realistic as opting out of electricity. The question isn't whether to engage, but how to do so with integrity.</p>
+        </section>
+
+        <!-- Section 6: Representative Quotes -->
+        <section class="section">
+            <h2>6. Representative Quotes</h2>
+            <p>The following comments were selected for clarity of expression and representativeness of broader themes. All quotes are from the original TikTok comment section.</p>
+
+            <div class="quote-grid">
+                <blockquote>
+                    "Women deal with AI with an extension in mind, not as a leisure activity. We literally want AI to wash the dishes so that we can go do art or spend time with our friends."
+                    <cite>&mdash; On women's practical orientation</cite>
+                </blockquote>
+                <blockquote>
+                    "Women are more focused and task-driven. They don't toy around with AI tools just for the sake of gaming with it."
+                    <cite>&mdash; On the gendered use gap</cite>
+                </blockquote>
+                <blockquote>
+                    "The whole thing reminds me of World War I, when generals were excited about playing with new weaponry and therefore intentionally didn't suppress access to weapons. This all resulted in the massive destruction of Europe."
+                    <cite>&mdash; On unchecked technological enthusiasm</cite>
+                </blockquote>
+                <blockquote>
+                    "I'm not going to redefine my professional identity to contribute to the destruction of humanity where no one's gonna have a job and there's no ecology anymore. Great. Sign me up."
+                    <cite>&mdash; On the ask being made of women</cite>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- Section 7: The Broader Context -->
+        <section class="section">
+            <h2>7. The Broader Context</h2>
+            <p>This comment analysis does not exist in a vacuum. It sits within a well-documented pattern:</p>
+
+            <ul class="findings-list">
+                <li>
+                    <span class="finding-number">01</span>
+                    <div><strong>The gender gap in AI adoption is real and growing.</strong> Multiple studies confirm women use generative AI at significantly lower rates than men across every age group and industry.</div>
+                </li>
+                <li>
+                    <span class="finding-number">02</span>
+                    <div><strong>Women's time poverty shapes technology adoption.</strong> Women have less discretionary time than men globally. Experimentation with new tools requires time that many women do not have&mdash;making "just try it" advice tone-deaf.</div>
+                </li>
+                <li>
+                    <span class="finding-number">03</span>
+                    <div><strong>Social media broke trust first.</strong> As discussed on the podcast, women who lived through social media's empty promises ("pictures of sunsets and kitty cats") are approaching the next wave of technology with a "fooled me once" posture.</div>
+                </li>
+                <li>
+                    <span class="finding-number">04</span>
+                    <div><strong>AI's foundations are gendered.</strong> Gaming and pornography were primary drivers of the technology's evolution. The first JPEG was a Playboy model. Women are not imagining the bias&mdash;it is structural.</div>
+                </li>
+                <li>
+                    <span class="finding-number">05</span>
+                    <div><strong>Women's risk assessment may be superior.</strong> As one podcast guest noted, women's apprehensions about AI "really are signed, like proper risk management." The reluctance is not irrational&mdash;it may be the more calibrated response.</div>
+                </li>
+                <li>
+                    <span class="finding-number">06</span>
+                    <div><strong>Self-efficacy is the unlock.</strong> Research on AI adoption shows the single biggest predictor of engagement isn't technical skill&mdash;it's the belief that you <em>can</em> do it. Women's AI resistance is, in part, a self-efficacy problem manufactured by exclusionary spaces.</div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section 8: Methodology -->
+        <section class="section">
+            <h2>8. Methodology</h2>
+
+            <ol class="methodology-steps">
+                <li>
+                    <strong>Data Collection</strong>
+                    <p>Over 1,000 comments were extracted from <a href="https://www.tiktok.com/@didoriot/video/7586016585823882517" target="_blank" style="color: #555; border-bottom: 1px solid #ccc;">Dido Riot's TikTok video</a> on women and AI resistance using Apify's TikTok comments scraper. Data was exported as CSV, capturing comment text, timestamps, usernames, and engagement metrics (likes, replies).</p>
+                </li>
+                <li>
+                    <strong>AI-Assisted Analysis</strong>
+                    <p>Comments were analyzed using Claude Code (Anthropic) to identify patterns, themes, and sentiment. The AI processed all comments, extracting key phrases, categorizing emotional tone, and flagging recurring topics across the full dataset.</p>
+                </li>
+                <li>
+                    <strong>Thematic Coding</strong>
+                    <p>Recurring topics were grouped into seven major themes through qualitative analysis. Theme frequency was determined by comment count. Individual comments could address multiple themes; the gendered critique category alone contained 190+ comments, the highest single-theme count.</p>
+                </li>
+                <li>
+                    <strong>Quote Selection</strong>
+                    <p>Representative quotes were selected based on engagement metrics, clarity of expression, and diversity of perspectives. All quotes are verbatim or closely paraphrased from the original comments.</p>
+                </li>
+                <li>
+                    <strong>Podcast Discussion</strong>
+                    <p>Findings were discussed on <a href="https://open.spotify.com/show/6uDNUzSFzZedJoiUE4lLfb" target="_blank" style="color: #555; border-bottom: 1px solid #ccc;">Episode 1 of <em>Womansplaining AI</em>, "On Women in AI and Who Gets a Seat,"</a> providing additional context, interpretation, and counter-perspectives from hosts Logan Currie and Mara Bolis.</p>
+                </li>
+            </ol>
+
+            <div class="note-box">
+                <p><strong>Limitations:</strong> This is a qualitative social listening analysis, not a rigorous quantitative study. The comment section of a TikTok video self-selects for people who felt strongly enough to respond, likely skewing toward those with negative experiences or strong opinions. Percentages are estimates based on AI-assisted pattern recognition. The goal is to surface themes and voices&mdash;not to produce statistically precise measurements. The demographics of TikTok's user base (skewing younger) and the creator's audience also shape who is represented. Additionally, the irony of using AI to analyze women's reasons for resisting AI is acknowledged and embraced.</p>
+            </div>
+        </section>
+
+        <!-- Podcast CTA -->
+        <a href="https://open.spotify.com/show/6uDNUzSFzZedJoiUE4lLfb" target="_blank" style="text-decoration: none;">
+        <div class="podcast-cta">
+            <h3>Discussed on Womansplaining AI</h3>
+            <p>Episode 1: "On Women in AI and Who Gets a Seat"</p>
+            <p style="margin-top: 10px; font-size: 0.85rem; color: #aaa;">Listen on Spotify &rarr;</p>
+            <p style="margin-top: 5px; font-size: 0.75rem; color: #666;">Strong opinions. Loosely held.</p>
+        </div>
+        </a>
+
+        <footer class="footer">
+            <p>Analysis of 1,000+ comments from <a href="https://www.tiktok.com/@didoriot/video/7586016585823882517" target="_blank">Dido Riot's TikTok on women and AI</a></p>
+            <p style="margin-top: 5px;">By <a href="https://www.tiktok.com/@loganinthefuture" target="_blank">@loganinthefuture</a> | January 2026</p>
+            <p style="margin-top: 12px; font-size: 0.8rem; color: #aaa;">Data collection: Apify | Analysis: Claude Code (Anthropic) | Visualization: Chart.js</p>
+        </footer>
+    </div>
+
+    <script>
+        // Themes horizontal bar chart
+        const themesCtx = document.getElementById('themesChart').getContext('2d');
+        new Chart(themesCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Gendered Critique',
+                    'Pride in Independent Thinking',
+                    'AI Is Inaccurate / Unreliable',
+                    'Creativity & Art Protection',
+                    'Environmental Concerns',
+                    'Cognitive Decline Fears',
+                    'Workplace Resistance'
+                ],
+                datasets: [{
+                    data: [190, 155, 140, 120, 95, 80, 70],
+                    backgroundColor: [
+                        '#1a1a1a',
+                        '#333',
+                        '#4d4d4d',
+                        '#666',
+                        '#808080',
+                        '#999',
+                        '#b3b3b3'
+                    ],
+                    borderWidth: 0,
+                    barThickness: 24
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.raw + '+ comments';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: '#eee'
+                        },
+                        ticks: {
+                            font: {
+                                family: "'Helvetica Neue', sans-serif",
+                                size: 11
+                            },
+                            color: '#888'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Approximate Comment Count',
+                            font: {
+                                family: "'Helvetica Neue', sans-serif",
+                                size: 10
+                            },
+                            color: '#aaa'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: "'Georgia', serif",
+                                size: 12
+                            },
+                            color: '#444'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Resistance framing doughnut chart
+        const framingCtx = document.getElementById('framingChart').getContext('2d');
+        new Chart(framingCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Values-Based Opt-Out',
+                    'Practical Skepticism',
+                    'Systemic Critique',
+                    'Self-Preservation',
+                    'Ambivalent / Conflicted'
+                ],
+                datasets: [{
+                    data: [30, 22, 25, 13, 10],
+                    backgroundColor: [
+                        '#1a1a1a',
+                        '#444',
+                        '#666',
+                        '#999',
+                        '#bbb'
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '55%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: "'Helvetica Neue', sans-serif",
+                                size: 10
+                            },
+                            color: '#666',
+                            padding: 12,
+                            usePointStyle: true,
+                            pointStyleWidth: 10
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
